@@ -48,6 +48,23 @@ export const getAllDelivery = async (req: Request, res: Response) => {
   }
 };
 
+export const getDeliveryById = async (req: Request, res: Response) => {
+  try {
+    const deliveryId: number = Number(req.params.id);
+    const result = await db
+      .select()
+      .from(deliveryTable)
+      .where(eq(deliveryTable.id, deliveryId));
+
+    res.status(200).json(result[0]);
+  } catch (err) {
+    res.status(500).send({
+      message: 'Error fetching Deliveries',
+      error: err,
+    });
+  }
+};
+
 export const updateVpDelivery = async (req: Request, res: Response) => {
   try {
     const updatedRes = await db

@@ -10,6 +10,7 @@ import { createLevel, getAllLevels } from '../controllers/admin/level';
 import {
   createDelivery,
   getAllDelivery,
+  getDeliveryById,
   updateVpDelivery,
 } from '../controllers/admin/delivery';
 
@@ -26,6 +27,7 @@ router.get('/getAllLevels', getAllLevels);
 router.post('/create-delivery', createDelivery);
 router.put('/updateVp', updateVpDelivery);
 router.get('/getAllDelivery', getAllDelivery);
+router.get('/getDeliveryById/:id', getDeliveryById);
 
 router.post('/login', login);
 

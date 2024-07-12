@@ -1,0 +1,11 @@
+. "$(dirname -- "$0")/_/husky.sh"
+echo '\n👷Checking on the Precommits 👷‍♂️'
+ 
+npm run prettier ||(
+    echo '\n❌ You have some errors in the prettier, \n\n Run "npm run prettier:fix" to format all the files, add changes to staged and try commit again.   \n 😉\n';
+    false;
+)
+ 
+ echo '\n ✅ Prettier check is successful \n 😉\n';
+ 
+echo '\n🎉 No error found: committing this now.... ✨🚀🏄‍♂️🍻\n'

@@ -17,7 +17,7 @@ const userSkillsTable = pgTable(
       userIdx: index('user_idx').on(table.userId),
       skillIdx: index('skill_idx').on(table.skillId),
     };
-  }
+  },
 );
 
 export const userSkillsRelations = relations(userSkillsTable, ({ one }) => ({

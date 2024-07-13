@@ -57,7 +57,7 @@ export const changePassword = async (req: Request, res: Response) => {
     const user = result[0];
     const isCurrentPasswordValid = await argon2.verify(
       user.password,
-      currentPassword
+      currentPassword,
     );
 
     if (!isCurrentPasswordValid) {

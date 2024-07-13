@@ -48,7 +48,7 @@ const projectTable = pgTable(
       projectTypeIdx: index('project_type_idx').on(table.projectType),
       projectStatusIdx: index('project_status_idx').on(table.projectStatus),
     };
-  }
+  },
 );
 
 export const projectRelations = relations(projectTable, ({ one, many }) => ({

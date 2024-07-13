@@ -30,7 +30,7 @@ const userTable = pgTable(
     role: userRole('user_role').notNull(), //idx
     deliveryId: integer('delivery_id').references(() => deliveryTable.id), //idx
     reportingManagerId: integer('reporting_manager_id').references(
-      (): AnyPgColumn => userTable.id
+      (): AnyPgColumn => userTable.id,
     ), //idx
     dateOfBirth: date('date_of_birth'),
     dateOfJoining: date('date_of_joining'),
@@ -47,10 +47,10 @@ const userTable = pgTable(
       roleIdx: index('role_idx').on(table.role),
       deliveryIdx: index('delivery_idx').on(table.deliveryId),
       reportingManagerIdx: index('reporting_manager_idx').on(
-        table.reportingManagerId
+        table.reportingManagerId,
       ),
     };
-  }
+  },
 );
 
 export const userRelations = relations(userTable, ({ one, many }) => ({

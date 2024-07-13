@@ -25,7 +25,7 @@ const projectAssigneeTable = pgTable(
       projectIdx: index('project_idx').on(table.projectId),
       assignedUserIdx: index('assigned_user_idx').on(table.userId),
     };
-  }
+  },
 );
 
 export const projectAssigneeRelations = relations(
@@ -39,14 +39,14 @@ export const projectAssigneeRelations = relations(
       fields: [projectAssigneeTable.projectId],
       references: [projectTable.id],
     }),
-  })
+  }),
 );
 
 export const insertProjectAssigneeSchema = createInsertSchema(
   projectAssigneeTable,
   {
     endDate: (schema) => schema.endDate.optional(),
-  }
+  },
 );
 
 export default projectAssigneeTable;

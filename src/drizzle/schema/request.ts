@@ -44,7 +44,7 @@ const requestTable = pgTable(
       resourceIdx: index('resource_idx').on(table.resourceId),
       requestStatusIdx: index('status_idx').on(table.requestStatus),
     };
-  }
+  },
 );
 
 export const requestRelations = relations(requestTable, ({ one }) => ({

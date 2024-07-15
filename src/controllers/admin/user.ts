@@ -6,6 +6,7 @@ import db from '../../drizzle/db';
 import deliveryTable from '../../drizzle/schema/delivery';
 import { eq } from 'drizzle-orm';
 import adminTable, { insertAdminSchema } from '../../drizzle/schema/admin';
+import jwt from 'jsonwebtoken';
 
 export const createAdmin = async (req: Request, res: Response) => {
   try {
@@ -129,8 +130,17 @@ export const login = async (req: Request, res: Response) => {
     const admin = result[0];
     const isPasswordValid = await argon2.verify(admin.password, password);
     if (isPasswordValid) {
+      let token = jwt.sign(
+        { id: admin.id, name: admin.name, role: 'ADMIN' },
+        process.env.API_SECRET!,
+        {
+          expiresIn: 86400,
+        },
+      );
       res.status(200).json({
+        name: admin.name,
         message: 'Logged In As Admin Successfully',
+        accessToken: token,
       });
     } else {
       return res.status(400).json({ error: 'Incorrect Password' });

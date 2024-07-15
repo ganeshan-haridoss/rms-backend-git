@@ -3,6 +3,7 @@ import userTable from '../../drizzle/schema/user';
 import argon2 from 'argon2';
 import db from '../../drizzle/db';
 import { eq } from 'drizzle-orm';
+import jwt from 'jsonwebtoken';
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -17,6 +18,13 @@ export const login = async (req: Request, res: Response) => {
     const user = result[0];
     const isPasswordValid = await argon2.verify(user.password, password);
     if (isPasswordValid) {
+      let token = jwt.sign(
+        { id: user.id, role: user.role },
+        process.env.API_SECRET!,
+        {
+          expiresIn: 86400,
+        },
+      );
       if (!user.passChanged) {
         res.status(200).json({
           passChanged: user.passChanged,
@@ -24,8 +32,15 @@ export const login = async (req: Request, res: Response) => {
         });
       } else {
         res.status(200).json({
+          user: {
+            name: user.name,
+            level: user.levelId,
+            delivery: user.deliveryId,
+            reportingManager: user.reportingManagerId,
+            role: user.role,
+          },
           msg: 'Logged In Successfully!',
-          role: user.role,
+          accessToken: token,
         });
       }
     } else {

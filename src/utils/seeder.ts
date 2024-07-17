@@ -4,6 +4,7 @@ import postgres from 'postgres';
 import userTable from '../drizzle/schema/user';
 import { eq } from 'drizzle-orm';
 import argon2 from 'argon2';
+import deliveryTable from '../drizzle/schema/delivery';
 
 // Set up your database connection
 const client = postgres(
@@ -60,6 +61,26 @@ const insertUser = async (user: User): Promise<number> => {
   return insertedUser[0].id;
 };
 
+const incrementEmployeeCount = async (deliveryId: number): Promise<void> => {
+  const deliveryRes = await db
+    .select({ employeeCount: deliveryTable.employeeCount })
+    .from(deliveryTable)
+    .where(eq(deliveryTable.id, deliveryId))
+    .execute();
+
+  if (deliveryRes.length === 0) {
+    throw new Error('Delivery Not Found');
+  }
+
+  const prevEmpCount = deliveryRes[0].employeeCount ?? 0;
+
+  await db
+    .update(deliveryTable)
+    .set({ employeeCount: prevEmpCount + 1 })
+    .where(eq(deliveryTable.id, deliveryId))
+    .execute();
+};
+
 const main = async () => {
   try {
     // Number of managers and employees to generate
@@ -86,6 +107,7 @@ const main = async () => {
         const manager = await generateRandomUser(true, level, deliveryId);
         const managerId = await insertUser(manager);
         managersByLevelAndDelivery[level][deliveryId].push(managerId);
+        await incrementEmployeeCount(deliveryId);
       }
     }
 
@@ -127,6 +149,7 @@ const main = async () => {
           faker.helpers.arrayElement(potentialManagers);
       }
       await insertUser(employee);
+      await incrementEmployeeCount(deliveryId);
     }
   } catch (error) {
     console.error('Error inserting users:', error);

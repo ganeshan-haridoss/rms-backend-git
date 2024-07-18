@@ -4,6 +4,10 @@ import {
   getAllProjects,
   updateProjectStatus,
 } from '../controllers/manager/project';
+import { verifyTokenAndRole } from '../middlewares/verifyTokenAndRole';
+
+// Add verifyTokenAndRole as middleware to any function as mentioned below
+// router.get('/getAllProjects', verifyTokenAndRole('MANAGER'), getAllProjects);
 
 const router = express.Router();
 

@@ -13,6 +13,10 @@ import {
   getDeliveryById,
   updateVpDelivery,
 } from '../controllers/admin/delivery';
+import { verifyTokenForAdmin } from '../middlewares/verifyTokenAndRole';
+
+// Add verifyTokenAndRole as middleware to any function as mentioned below
+// router.get('/getAllUsers', verifyTokenForAdmin, getAllUsers);
 
 const router = express.Router();
 
